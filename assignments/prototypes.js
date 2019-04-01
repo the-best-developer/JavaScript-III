@@ -16,12 +16,59 @@
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
 
+// ##################################################
+
+//Contructor function
+function GameObject (object) {
+this.name = object.name;
+this.createdAt = object.createdAt;
+this.dimensions = object.dimensions;
+}
+
+//Prototype Method
+GameObject.prototype.destroy = function () {
+  return `${this.name} was removed from the game.`;
+}
+
+//Define newPlayer object using the GameObject constructor
+newPlayer1 = new GameObject({name: "Player1", createdAt: "2048x4096", demensions: "256x512"});
+
+//Calling the destroy prototype method from the newly contructed object
+console.log(newPlayer1.destroy());
+
+// ##################################################
+
 /*
   === CharacterStats ===
   * healthPoints
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
+
+// ##################################################
+
+//CharacterStats contructor
+function CharacterStats (object) {
+  //Inherit GameObject this variables
+  GameObject.call(this, object);
+  
+  this.healthPoints = object.healthPoints;
+}
+//Inherit GameObject prototype methods into CharacterStats prototype
+CharacterStats.prototype = Object.create(GameObject.prototype);
+
+//CharacterStats prototype method
+CharacterStats.prototype.takeDamage = function () {
+  return `${this.name} took damage`;
+}
+//Define newPlayer2 using the contructor CharacterStats
+newPlayer2 = new CharacterStats({name: "Player2", createdAt: "1024x8192", demensions: "32x64"});
+
+//Call takeDamage() method, and inherited destroy() method
+console.log(newPlayer2.takeDamage());
+console.log(newPlayer2.destroy());
+
+// ##################################################
 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
@@ -32,7 +79,27 @@
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
- 
+
+// ##################################################
+
+//Define Humanoid constructor
+function Humanoid (object) {
+  //Inherit CharacterStats this variables, and GameObject this variables by proxy.
+  CharacterStats.call(this, object);
+  this.team = object.team;
+  this.weapons = object.weapons;
+  this.language = object.language;
+}
+//Inherit CharacterStats prototype methods, and GameObject prototype methods by proxy.
+Humanoid.prototype = Object.create(CharacterStats.prototype);
+
+//Define Humanoid greet() prototype method
+Humanoid.prototype.greet = function () {
+  return `${this.name} offers a greeting in ${this.language}.`;
+}
+
+// ##################################################
+
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
@@ -41,7 +108,7 @@
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
+
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -102,7 +169,7 @@
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
+
 
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
