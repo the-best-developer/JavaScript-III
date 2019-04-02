@@ -68,7 +68,7 @@ PersonConstructor.prototype.sayHello = function () {
 joeObj = new PersonConstructor({name: "Joe", favColor: "red", age: 31});
 
 //Call the sayHello() function from the newly created joeObj object
-console.log(JoeObj.sayHello());
+console.log(joeObj.sayHello());
 
 // ##################################################
 
